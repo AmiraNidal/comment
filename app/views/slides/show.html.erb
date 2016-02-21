@@ -1,0 +1,48 @@
+
+<br />
+<%= link_to "Upload", new_pdf_file_path, class: "btn btn-primary" %>
+<br />
+
+<p>
+  <strong>Title:</strong>
+  <%= @slide.title %>
+</p>
+
+
+
+<p><%= image_tag("/assets/#{@slide.title}")%></p>
+
+
+<%= link_to "previous", pdf_file_slide_path(@pdf_file, @slide.prev) if @slide.prev != nil %>
+ 
+<%= link_to "next", pdf_file_slide_path(@pdf_file, @slide.next) if @slide.next != nil %>
+
+
+<p>
+  <strong>Likes:</strong>
+  <%= @slide.likes %>
+  <% if current_user.slides.find_by(id: @slide.id)
+  	link= "unlike"
+  	else
+  		link="like"
+  		end %>
+<%=link_to link, pdf_file_slide_path, method: :put %>
+</p>
+<div id="comments">
+	<%= render @slide.comments %>
+</div>
+<div>
+	<%= form_for ([@slide.pdf_file, @slide, @slide.comments.new]) do |f| %>
+	<div class="field">
+		<%= f.label :comment %>
+		<%= f.text_area :comment, size: "25x5" %>
+	</div>
+	<div class="actions">
+		<%= f.submit "add new comment" %>
+	</div>
+	<% end %>
+</div>
+
+
+
+
